@@ -1,0 +1,345 @@
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Orbitron:wght@500;600;700;800&display=swap");
+@import "tailwindcss";
+
+/* =====================================================================
+   KERNELiOS — Brand-kit runtime variables.
+   BrandKitProvider rewrites these at runtime for white-label theming.
+   Defaults = "KERNELiOS HQ" gold/dark cyber kit.
+   ===================================================================== */
+:root {
+  /* Identity */
+  --brand-name: "KERNELiOS";
+
+  /* Surfaces — layered depth system */
+  --surface:   #07080b;
+  --surface-1: #0d0f14;
+  --surface-2: #14161c;
+  --surface-3: #1c1f27;
+  --surface-4: #252932;
+
+  /* Borders */
+  --border:        #27272a;
+  --border-strong: #3f3f46;
+
+  /* Foreground */
+  --foreground: #f4f4f5;
+  --muted:      #a1a1aa;
+  --subtle:     #71717a;
+
+  /* Brand */
+  --primary:       #ffd700;
+  --primary-glow:  #ffee58;
+  --primary-deep:  #ffc107;
+  --secondary:     #4b0082;
+  --secondary-glow:#6a0dad;
+  --accent:        #ff3d00;
+
+  /* Status */
+  --success: #00ff88;
+  --warning: #ffb800;
+  --danger:  #ef4444;
+
+  /* Glow effects — subtle, not neon-thick */
+  --glow-primary:        0 0 8px color-mix(in oklab, var(--primary) 45%, transparent),
+                         0 0 20px color-mix(in oklab, var(--primary) 20%, transparent);
+  --glow-primary-strong: 0 0 12px color-mix(in oklab, var(--primary) 60%, transparent),
+                         0 0 32px color-mix(in oklab, var(--primary) 30%, transparent);
+  --glow-success:        0 0 8px color-mix(in oklab, var(--success) 45%, transparent),
+                         0 0 20px color-mix(in oklab, var(--success) 20%, transparent);
+  --glow-danger:         0 0 8px color-mix(in oklab, var(--danger) 45%, transparent),
+                         0 0 20px color-mix(in oklab, var(--danger) 20%, transparent);
+  --glow-warning:        0 0 8px color-mix(in oklab, var(--warning) 45%, transparent),
+                         0 0 20px color-mix(in oklab, var(--warning) 20%, transparent);
+  --glow-accent:         0 0 10px color-mix(in oklab, var(--accent) 50%, transparent);
+  --shadow-window:       0 4px 6px -1px rgba(0,0,0,0.4),
+                         0 16px 48px rgba(0,0,0,0.6),
+                         0 0 0 1px var(--border);
+
+  /* Typography */
+  --font-display: "Orbitron", "JetBrains Mono", ui-sans-serif, system-ui, sans-serif;
+  --font-body:    "JetBrains Mono", ui-monospace, monospace;
+  --font-mono:    "JetBrains Mono", var(--font-geist-mono), ui-monospace, monospace;
+
+  /* Scrollbar */
+  --scrollbar: var(--primary);
+}
+
+/* Bind runtime vars into Tailwind theme */
+@theme inline {
+  --color-surface:        var(--surface);
+  --color-surface-1:      var(--surface-1);
+  --color-surface-2:      var(--surface-2);
+  --color-surface-3:      var(--surface-3);
+  --color-surface-4:      var(--surface-4);
+  --color-border:         var(--border);
+  --color-border-strong:  var(--border-strong);
+  --color-foreground:     var(--foreground);
+  --color-muted:          var(--muted);
+  --color-subtle:         var(--subtle);
+  --color-primary:        var(--primary);
+  --color-primary-glow:   var(--primary-glow);
+  --color-primary-deep:   var(--primary-deep);
+  --color-secondary:      var(--secondary);
+  --color-secondary-glow: var(--secondary-glow);
+  --color-accent:         var(--accent);
+  --color-success:        var(--success);
+  --color-warning:        var(--warning);
+  --color-danger:         var(--danger);
+  --font-display: var(--font-display);
+  --font-body:    var(--font-body);
+  --font-mono:    var(--font-mono);
+}
+
+/* ─── Base ─────────────────────────────────────────────────────────── */
+html, body {
+  background: var(--surface);
+  color: var(--foreground);
+  font-family: var(--font-mono);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  line-height: 1.6;
+}
+
+::selection {
+  background: color-mix(in oklab, var(--primary) 30%, transparent);
+  color: var(--foreground);
+}
+
+/* Focus ring — single thin primary outline, no purple secondary halo. */
+:focus-visible {
+  outline: 1px solid color-mix(in oklab, var(--primary) 70%, transparent);
+  outline-offset: 2px;
+}
+/* Inputs get the same single ring; the browser default outline is suppressed
+   so there is never a double-frame. */
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+button:focus-visible {
+  outline: 1px solid color-mix(in oklab, var(--primary) 70%, transparent);
+  outline-offset: 2px;
+  box-shadow: none;
+}
+
+/* ─── Selection — uses brand primary for consistency ─────────────────── */
+::selection {
+  background: color-mix(in oklab, var(--primary) 30%, transparent);
+  color: var(--foreground);
+}
+
+/* Scrollbars — gradient thumb from --scrollbar (= mouse) → --secondary */
+* {
+  scrollbar-color: color-mix(in oklab, var(--scrollbar) 60%, transparent) transparent;
+  scrollbar-width: thin;
+}
+*::-webkit-scrollbar        { width: 6px; height: 6px; }
+*::-webkit-scrollbar-thumb  {
+  background: linear-gradient(180deg,
+    color-mix(in oklab, var(--scrollbar) 70%, transparent) 0%,
+    color-mix(in oklab, var(--secondary) 60%, transparent) 100%);
+  border-radius: 3px;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg,
+    var(--scrollbar) 0%,
+    color-mix(in oklab, var(--secondary) 85%, transparent) 100%);
+}
+*::-webkit-scrollbar-track  { background: transparent; }
+
+/* ─── Utility Classes ───────────────────────────────────────────────── */
+
+/* Cyber grid background — fixed, subtle */
+@utility cyber-grid-bg {
+  background-color: var(--surface);
+  background-image:
+    linear-gradient(to right,  color-mix(in oklab, var(--primary) 5%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklab, var(--primary) 5%, transparent) 1px, transparent 1px),
+    radial-gradient(ellipse at 50% 0%, color-mix(in oklab, var(--primary) 8%, transparent) 0%, transparent 55%);
+  background-size: 48px 48px, 48px 48px, 100% 100%;
+  background-attachment: fixed;
+}
+
+/* Grid scan — slightly different pattern for interior panels */
+@utility grid-scan {
+  background-image:
+    linear-gradient(to right,  color-mix(in oklab, var(--primary) 4%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklab, var(--primary) 4%, transparent) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Scanlines — CRT-style overlay */
+@utility scanlines-overlay {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 2px,
+    color-mix(in oklab, #000 18%, transparent) 2px,
+    color-mix(in oklab, #000 18%, transparent) 3px
+  );
+  mix-blend-mode: multiply;
+  z-index: 10;
+}
+
+/* Scanlines — lighter variant for surface overlays */
+@utility scanlines-light {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 3px,
+    color-mix(in oklab, var(--foreground) 3%, transparent) 3px,
+    color-mix(in oklab, var(--foreground) 3%, transparent) 4px
+  );
+  mix-blend-mode: overlay;
+  z-index: 1;
+}
+
+/* Text glows */
+@utility text-glow {
+  text-shadow: 0 0 8px color-mix(in oklab, var(--primary) 50%, transparent);
+}
+@utility text-glow-strong {
+  text-shadow:
+    0 0 10px color-mix(in oklab, var(--primary) 70%, transparent),
+    0 0 30px color-mix(in oklab, var(--primary) 30%, transparent);
+}
+@utility text-glow-success {
+  text-shadow: 0 0 8px color-mix(in oklab, var(--success) 50%, transparent);
+}
+@utility text-glow-danger {
+  text-shadow: 0 0 8px color-mix(in oklab, var(--danger) 50%, transparent);
+}
+
+/* Box glows */
+@utility ring-cyber {
+  box-shadow:
+    inset 0 0 0 1px color-mix(in oklab, var(--primary) 25%, transparent),
+    var(--glow-primary);
+}
+@utility ring-cyber-success {
+  box-shadow:
+    inset 0 0 0 1px color-mix(in oklab, var(--success) 25%, transparent),
+    var(--glow-success);
+}
+@utility ring-cyber-danger {
+  box-shadow:
+    inset 0 0 0 1px color-mix(in oklab, var(--danger) 25%, transparent),
+    var(--glow-danger);
+}
+
+/* Cyber border — 1px with primary tint + inner shadow */
+@utility cyber-border {
+  border: 1px solid color-mix(in oklab, var(--primary) 20%, var(--border));
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklab, var(--primary) 8%, transparent),
+    inset 0 0 20px color-mix(in oklab, var(--primary) 3%, transparent);
+}
+
+/* Vignette bottom fade */
+@utility vignette-bottom {
+  mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
+}
+
+/* ─── Animations ────────────────────────────────────────────────────── */
+@keyframes blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+@keyframes flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
+  20%, 22%, 24%, 55% { opacity: 0.45; }
+}
+
+@keyframes scan {
+  0%   { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+
+@keyframes scan-h {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes pulse-ring {
+  0%   { box-shadow: 0 0 0 0 color-mix(in oklab, var(--primary) 60%, transparent); }
+  70%  { box-shadow: 0 0 0 8px transparent; }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+
+@keyframes glitch {
+  0%, 100% { transform: translate(0); clip-path: none; }
+  15%       { transform: translate(-2px, 1px); clip-path: polygon(0 15%, 100% 15%, 100% 30%, 0 30%); }
+  30%       { transform: translate(2px, -1px); clip-path: polygon(0 55%, 100% 55%, 100% 70%, 0 70%); }
+  45%       { transform: translate(-1px, -2px); clip-path: polygon(0 75%, 100% 75%, 100% 85%, 0 85%); }
+  60%       { transform: translate(1px, 2px); clip-path: none; }
+  75%       { transform: translate(-1px, 1px); }
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes rise-stagger {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes draw-line {
+  from { width: 0; }
+  to   { width: 100%; }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: var(--glow-primary); }
+  50%       { box-shadow: var(--glow-primary-strong); }
+}
+
+@keyframes slide-in-left {
+  from { transform: translateX(-100%); opacity: 0; }
+  to   { transform: translateX(0); opacity: 1; }
+}
+
+/* LiquidGlass — the orbiting spark is rendered + animated via JavaScript
+   inside the component for guaranteed cross-browser support (no offset-path,
+   no @property, no mask-composite). See liquid-glass.tsx. */
+
+/* Animation utility classes */
+.animate-blink        { animation: blink 1s steps(2, start) infinite; }
+.animate-flicker      { animation: flicker 3.5s linear infinite; }
+.animate-scan         { animation: scan 3s linear infinite; }
+.animate-scan-h       { animation: scan-h 4s linear infinite; }
+.animate-pulse-ring   { animation: pulse-ring 2.2s ease-out infinite; }
+.animate-glitch       { animation: glitch 0.5s ease-in-out infinite; }
+.animate-rise         { animation: rise 400ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+.animate-fade-in      { animation: fade-in 300ms ease both; }
+.animate-pulse-glow   { animation: pulse-glow 2s ease-in-out infinite; }
+.animate-slide-in-left { animation: slide-in-left 250ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+/* Staggered rise delays */
+.delay-75  { animation-delay: 75ms; }
+.delay-150 { animation-delay: 150ms; }
+.delay-225 { animation-delay: 225ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; }
+
+/* ─── Page heading scale — pages use text-2xl which feels small for cyber UI ─── */
+h1.font-display { font-size: 1.875rem; line-height: 1.15; }  /* 30px */
+h2.font-display { font-size: 1.125rem; line-height: 1.3; }   /* 18px */
+
+/* Inputs/selects — readable but not chunky */
+input, textarea, select {
+  font-size: 0.875rem;  /* 14px */
+}

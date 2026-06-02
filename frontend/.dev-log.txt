@@ -1,0 +1,31 @@
+
+> frontend@0.1.0 dev
+> next dev --hostname localhost --port 3000
+
+   ▲ Next.js 15.5.18
+   - Local:        http://localhost:3000
+   - Network:      http://localhost:3000
+   - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 3.1s
+ ○ Compiling / ...
+ ✓ Compiled / in 3.7s (670 modules)
+ GET / 200 in 4547ms
+ ✓ Compiled in 826ms (266 modules)
+ ○ Compiling /login ...
+ ✓ Compiled /login in 870ms (676 modules)
+ GET /login 200 in 1287ms
+ ✓ Compiled in 412ms (272 modules)
+ ⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/login'
+}
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 1701ms (1029 modules)
+ GET /login 500 in 2211ms
+ ✓ Compiled in 172ms (431 modules)
+ ✓ Compiled in 132ms (431 modules)
+ ✓ Compiled in 126ms (431 modules)
+ ✓ Compiled in 132ms (431 modules)
+ ✓ Compiled in 142ms (431 modules)

@@ -1,0 +1,35 @@
+# KERNELiOS backend — pinned dependencies
+
+Django==5.0.14
+djangorestframework==3.15.2
+django-cors-headers==4.6.0
+python-dotenv==1.0.1
+
+# DB drivers (psycopg only needed for Cloudways Postgres)
+psycopg[binary]==3.2.3
+
+# Cache (optional locally; required on Cloudways)
+redis==5.0.8
+django-redis==5.4.0
+
+# Auth
+argon2-cffi==23.1.0
+
+# Media / images
+Pillow==11.2.1
+
+# HTTP client (Moodle REST API)
+requests==2.32.4
+
+# Exports
+openpyxl==3.1.5
+reportlab==4.2.5
+
+# Geo-IP (MaxMind GeoLite2 — mmdb must be placed at backend/data/GeoLite2-Country.mmdb)
+geoip2==4.8.1
+
+# Production WSGI server (Cloudways supervisor runs gunicorn)
+gunicorn==23.0.0
+
+# Static-file serving via gunicorn (no nginx static config needed for /static/)
+whitenoise[brotli]==6.8.2
