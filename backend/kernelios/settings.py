@@ -120,6 +120,11 @@ if _db_engine == "django.db.backends.sqlite3":
         }
     }
 else:
+    _db_options: dict = {}
+    if "mysql" in _db_engine:
+        _db_options = {"charset": "utf8mb4", "init_command": "SET sql_mode='STRICT_TRANS_TABLES'"}
+    elif "postgresql" in _db_engine:
+        _db_options = {"sslmode": os.getenv("DB_SSLMODE", "prefer")}
     DATABASES = {
         "default": {
             "ENGINE": _db_engine,
@@ -127,9 +132,9 @@ else:
             "USER": os.getenv("DB_USER", ""),
             "PASSWORD": os.getenv("DB_PASSWORD", ""),
             "HOST": os.getenv("DB_HOST", "localhost"),
-            "PORT": os.getenv("DB_PORT", "5432"),
-            "CONN_MAX_AGE": int(os.getenv("DB_CONN_MAX_AGE", "60")),
-            "OPTIONS": {"sslmode": os.getenv("DB_SSLMODE", "prefer")},
+            "PORT": os.getenv("DB_PORT", "3306"),
+            "CONN_MAX_AGE": int(os.getenv("DB_CONN_MAX_AGE", "0")),
+            "OPTIONS": _db_options,
         }
     }
 
