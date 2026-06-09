@@ -6,7 +6,19 @@ export function middleware(request: NextRequest) {
   // authenticated UI for unauthenticated users on hard refreshes.
   const sessionCookie = request.cookies.get("sessionid");
   if (!sessionCookie) {
-    const loginUrl = new URL("/login", request.url);
+    // Build redirect using forwarded headers — Next.js runs at 127.0.0.1:3001
+    // behind a proxy, so request.url contains the internal address, not the
+    // public domain. X-Forwarded-Proto/Host carry the real public URL.
+    // x-forwarded-* headers are set by the Cloudways proxy chain.
+    // Locally (no proxy) we fall back to Next.js's own nextUrl values.
+    const proto =
+      request.headers.get("x-forwarded-proto") ??
+      request.nextUrl.protocol.replace(":", "");
+    const host =
+      request.headers.get("x-forwarded-host") ??
+      request.headers.get("host") ??
+      request.nextUrl.host;
+    const loginUrl = new URL(`${proto}://${host}/login`);
     loginUrl.searchParams.set("next", request.nextUrl.pathname);
     return NextResponse.redirect(loginUrl);
   }
