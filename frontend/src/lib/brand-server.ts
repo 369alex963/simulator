@@ -53,7 +53,12 @@ export async function resolveBrandKitServer(): Promise<BrandKit> {
       cache: "no-store",
     });
     if (!res.ok) return KERNELIOS_DEFAULT;
-    return (await res.json()) as BrandKit;
+    // Replace internal Django media URLs (http://127.0.0.1:PORT/media/...) with
+    // relative paths so the browser never fetches from localhost, which triggers
+    // Chrome's Private Network Access permission dialog.
+    const raw = await res.text();
+    const fixed = raw.replace(/https?:\/\/127\.0\.0\.1:\d+\/media\//g, "/media/");
+    return JSON.parse(fixed) as BrandKit;
   } catch {
     return KERNELIOS_DEFAULT;
   }
