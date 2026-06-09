@@ -52,8 +52,8 @@ export function TopNav({ user, onMenuToggle, sidebarOpen }: TopNavProps) {
     <header className="fixed inset-x-0 top-0 z-50 h-16 flex items-center justify-between gap-4 border-b border-border/70 bg-surface-1/97 px-5 backdrop-blur-md">
       <div aria-hidden className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-primary/0 via-primary/50 to-primary/0" />
 
-      {/* Left: hamburger + logo */}
-      <div className="flex items-center gap-4 shrink-0">
+      {/* Left: hamburger + logo — flex-1 min-w-0 so it never pushes the right section */}
+      <div className="flex items-center gap-3 flex-1 min-w-0 overflow-hidden">
         {onMenuToggle && (
           <button
             onClick={onMenuToggle}
@@ -66,27 +66,27 @@ export function TopNav({ user, onMenuToggle, sidebarOpen }: TopNavProps) {
           </button>
         )}
 
-        <Link href={dashboardHref} className="flex items-center gap-3 shrink-0 group" prefetch>
+        <Link href={dashboardHref} className="flex items-center gap-2 min-w-0 shrink group" prefetch>
           {!logoFailed && (
             <Image
               src={logo}
               alt={brandName}
-              width={200}
-              height={44}
-              className="h-11 w-auto max-w-[200px] object-contain"
-              style={{ height: "auto", maxHeight: "44px" }}
+              width={160}
+              height={40}
+              className="h-10 w-auto max-w-[140px] object-contain shrink-0"
+              style={{ height: "auto", maxHeight: "40px" }}
               unoptimized
               priority
               onError={() => setLogoFailed(true)}
             />
           )}
-          <span className="font-display text-base font-bold text-primary tracking-[0.06em] whitespace-nowrap hidden sm:block">
+          <span className="font-display text-sm font-bold text-primary tracking-[0.06em] truncate max-w-[160px] hidden sm:block">
             <GlitchText text={brandName} onHover />
           </span>
-          <PulseDot color="success" size="sm" />
+          <PulseDot color="success" size="sm" className="shrink-0" />
         </Link>
 
-        <div className="hidden lg:flex items-center gap-2 border-l border-border/50 pl-4">
+        <div className="hidden xl:flex items-center gap-2 border-l border-border/50 pl-3 shrink-0">
           <span className="font-mono text-xs text-subtle uppercase tracking-widest">UTC</span>
           <LiveClock />
         </div>

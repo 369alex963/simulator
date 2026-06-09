@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist_Mono } from "next/font/google";
+import { cache } from "react";
 import "./globals.css";
 import { BrandKitProvider } from "@/components/branding/brand-kit-provider";
 import { resolveBrandKitServer, buildBrandKitStyleSheet } from "@/lib/brand-server";
@@ -10,15 +11,20 @@ const geistMono = Geist_Mono({
   weight: ["400", "500", "700"],
 });
 
-export const metadata: Metadata = {
-  title: "KERNELiOS — Advanced Simulator System",
-  description: "Cyber-themed exam & simulation platform. Brand-aware. Branch-aware. Production-ready.",
-  applicationName: "KERNELiOS",
-  // NOTE: favicon is injected at runtime by BrandKitProvider via /lib/brand.ts
-  // upsertHeadElement(). Don't set `icons` here — that would render a
-  // React-tracked <link> in <head> that our brand-kit code would shadow,
-  // which Next.js / React 19 can react badly to on navigation.
-};
+// cache() deduplicates calls within the same request so generateMetadata
+// and RootLayout share one fetch instead of making two.
+const getKit = cache(resolveBrandKitServer);
+
+export async function generateMetadata(): Promise<Metadata> {
+  const kit = await getKit();
+  return {
+    title: kit.site_title || "KERNELiOS — Advanced Simulator System",
+    description: "Cyber-themed exam & simulation platform. Brand-aware. Branch-aware. Production-ready.",
+    applicationName: kit.brand_name || "KERNELiOS",
+    // NOTE: favicon is injected at runtime by BrandKitProvider via /lib/brand.ts
+    // upsertHeadElement(). Don't set `icons` here.
+  };
+}
 
 export const viewport: Viewport = {
   themeColor: "#07080b",
@@ -31,7 +37,7 @@ export default async function RootLayout({
   // SSR-resolve the brand-kit so the very first byte already carries the
   // correct CSS variables — kills the "default KERNELiOS gold flashes for
   // a frame, then jumps to the branch kit" FOUC.
-  const kit = await resolveBrandKitServer();
+  const kit = await getKit();
   const brandSheet = buildBrandKitStyleSheet(kit);
 
   return (

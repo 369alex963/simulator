@@ -19,7 +19,6 @@ export default function HomePage() {
         muted
         playsInline
         preload="auto"
-        poster="/logo.png"
         className="absolute inset-0 -z-20 h-full w-full object-cover"
         aria-hidden
       >
