@@ -36,12 +36,19 @@ export async function resolveBrandKitServer(): Promise<BrandKit> {
   const reqHeaders = await headers();
   const cookieHeader = cookieStore.getAll().map((c) => `${c.name}=${c.value}`).join("; ");
   const xff = reqHeaders.get("x-forwarded-for") ?? "";
+  // Forward the public host so Django builds absolute media URLs with the real
+  // domain instead of http://127.0.0.1:8000, which triggers Chrome's
+  // Private Network Access permission dialog.
+  const forwardedHost = reqHeaders.get("x-forwarded-host") ?? reqHeaders.get("host") ?? "";
+  const forwardedProto = reqHeaders.get("x-forwarded-proto") ?? "https";
 
   try {
     const res = await fetch(`${base}/api/brand/resolve/`, {
       headers: {
         ...(cookieHeader ? { cookie: cookieHeader } : {}),
         ...(xff ? { "x-forwarded-for": xff } : {}),
+        ...(forwardedHost ? { "x-forwarded-host": forwardedHost, host: forwardedHost } : {}),
+        "x-forwarded-proto": forwardedProto,
       },
       cache: "no-store",
     });

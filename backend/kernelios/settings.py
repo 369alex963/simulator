@@ -169,6 +169,8 @@ if not DEBUG:
     SECURE_HSTS_PRELOAD = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_REFERRER_POLICY = "same-origin"
+# Trust X-Forwarded-Host so Django builds absolute media URLs with the public domain
+USE_X_FORWARDED_HOST = True
 X_FRAME_OPTIONS = "DENY"
 
 # ----------------------------------------------------------------------
